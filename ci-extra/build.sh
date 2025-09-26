@@ -10,3 +10,6 @@ cmake -S . \
 
 # Build
 cmake --build "build/${PRESET_NAME}" -j
+
+iwyu_tool.py -p "build/${PRESET_NAME}" -j -- -Wno-unknown-warning-option -Xiwyu --error_always || true
+

@@ -15,15 +15,14 @@ ct_configure_compiler()
 include(Dependencies)
 
 find_program(IWYU_BIN NAMES include-what-you-use iwyu)
-if (IWYU_BIN)
-    set(CMAKE_CXX_INCLUDE_WHAT_YOU_USE "${IWYU_BIN}")
-else ()
+if (NOT IWYU_BIN)
     message(FATAL_ERROR "include-what-you-use not found")
 endif ()
+
 if (MSVC)
-    set(IWYU_WRAPPED "${IWYU_BIN};--driver-mode=cl;-Wno-unknown-warning-option")
+    set(CMAKE_CXX_INCLUDE_WHAT_YOU_USE "${IWYU_BIN};--driver-mode=cl;-Wno-unknown-warning-option")
 else ()
-    set(IWYU_WRAPPED "${IWYU_BIN};-Wno-unknown-warning-option")
+    set(CMAKE_CXX_INCLUDE_WHAT_YOU_USE "${IWYU_BIN};-Wno-unknown-warning-option")
 endif ()
 
 # Setup a 'solution' target
@@ -35,7 +34,9 @@ if (SOLUTION_SOURCES_LENGTH EQUAL 0)
 else ()
     add_library(solution ${SOLUTION_SOURCES}
             src/solution.cpp
-            src/solution2.cpp)
+            src/solution2.cpp
+            src/correct_solution.cpp
+    )
     target_include_directories(solution PUBLIC src)
     set_target_properties(solution PROPERTIES LINKER_LANGUAGE CXX)
     ct_set_compiler_warnings(solution)
