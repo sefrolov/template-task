@@ -1,4 +1,4 @@
-#include <cstdint>
+#include <stdint.h>
 
 namespace ct {
 struct test_small_struct {
