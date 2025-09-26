@@ -1,7 +1,7 @@
 #pragma once
 
-#include <stdexcept>
 #include <set>
+#include <stdexcept>
 
 namespace ct {
 

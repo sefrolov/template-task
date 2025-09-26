@@ -11,6 +11,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Install libs for checks
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y dos2unix
+
       - name: Check line breaks
         run: |
           ci-extra/check-lines.sh
@@ -39,7 +44,7 @@ jobs:
           - Sanitized
           - SanitizedDebug
 
-    runs-on: [ubuntu-latest, base, "${{ matrix.toolchain.runner-label }}"]
+    runs-on: ubuntu-latest
 
     env:
       CT_CMAKE_PRESET: "Default-${{ matrix.build-type }}"
