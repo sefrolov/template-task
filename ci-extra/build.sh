@@ -9,7 +9,10 @@ cmake -S . \
   -D CT_TREAT_WARNINGS_AS_ERRORS=ON
 
 # Build
-cmake --build "build/${PRESET_NAME}" -j
+cmake --build "build/${PRESET_NAME}" -j | tee "build/build_log.out"
 
-iwyu_tool.py -p "build/${PRESET_NAME}" -j -- -Wno-unknown-warning-option -Xiwyu --error_always || true
+#iwyu_tool.py -p "build/${PRESET_NAME}" -j -- -Wno-unknown-warning-option -Xiwyu --error_always || true
 
+if grep -Eq "include-what-you-use reported diagnostics" "build/build_log.out"; then
+  exit 1
+fi

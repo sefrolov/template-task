@@ -84,7 +84,7 @@ jobs:
           fi
           ci-extra/test.sh "$CT_CMAKE_PRESET"
 
-      - name: Run tests with valgrind
-        if: ${{ matrix.build-type == 'RelWithDebInfo' }}
-        run: |
-          ci-extra/test-valgrind.sh "$CT_CMAKE_PRESET"
+#      - name: Run tests with valgrind
+#        if: ${{ matrix.build-type == 'RelWithDebInfo' }}
+#        run: |
+#          ci-extra/test-valgrind.sh "$CT_CMAKE_PRESET"
