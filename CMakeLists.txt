@@ -15,18 +15,18 @@ ct_configure_compiler()
 include(Dependencies)
 
 find_program(IWYU_BIN NAMES include-what-you-use iwyu)
-if (NOT IWYU_BIN)
-    message(FATAL_ERROR "include-what-you-use not found")
-endif ()
-
-if (MSVC)
-    set(CMAKE_CXX_INCLUDE_WHAT_YOU_USE "${IWYU_BIN};--driver-mode=cl"
-            "-Wno-unknown-warning-option"
-            "-Xiwyu;--mapping_file=${CMAKE_SOURCE_DIR}/cmake/libstdcxx.imp")
+if (IWYU_BIN)
+    if (MSVC)
+        set(CMAKE_CXX_INCLUDE_WHAT_YOU_USE "${IWYU_BIN};--driver-mode=cl"
+                "-Wno-unknown-warning-option"
+                "-Xiwyu;--mapping_file=${CMAKE_SOURCE_DIR}/cmake/libstdcxx.imp")
+    else ()
+        set(CMAKE_CXX_INCLUDE_WHAT_YOU_USE "${IWYU_BIN}"
+                "-Wno-unknown-warning-option"
+                "-Xiwyu;--mapping_file=${CMAKE_SOURCE_DIR}/cmake/libstdcxx.imp")
+    endif ()
 else ()
-    set(CMAKE_CXX_INCLUDE_WHAT_YOU_USE "${IWYU_BIN}"
-            "-Wno-unknown-warning-option"
-            "-Xiwyu;--mapping_file=${CMAKE_SOURCE_DIR}/cmake/libstdcxx.imp")
+    message(STATUS "include-what-you-use not found, running without it")
 endif ()
 
 # Setup a 'solution' target
