@@ -1,18 +1,18 @@
-// GNU libstdc++ mappings generated with:
-//
-// iwyu-src/mapgen/iwyu-mapgen-libstdcxx.py /usr/include/c++/14 \
-//     /usr/include/x86_64-linux-gnu/c++/14
-//
-// Do not edit!
-const IncludeMapEntry libstdcpp_include_map[] = {
-  // Private-to-public #include mappings.
-  { "<debug/bitset>", kPrivate, "<bitset>", kPublic },
-  { "<debug/deque>", kPrivate, "<deque>", kPublic },
-  { "<debug/forward_list>", kPrivate, "<forward_list>", kPublic },
-  { "<debug/list>", kPrivate, "<list>", kPublic },
-  { "<debug/map>", kPrivate, "<map>", kPublic },
-  { "<debug/set>", kPrivate, "<set>", kPublic },
-  { "<debug/unordered_map>", kPrivate, "<unordered_map>", kPublic },
-  { "<debug/unordered_set>", kPrivate, "<unordered_set>", kPublic },
-  { "<debug/vector>", kPrivate, "<vector>", kPublic },
-};
+# GNU libstdc++ mappings generated with:
+#
+# iwyu-src/mapgen/iwyu-mapgen-libstdcxx.py --lang imp /usr/include/c++/14 \
+#     /usr/include/x86_64-linux-gnu/c++/14
+#
+# Do not edit!
+[
+  # Private-to-public #include mappings.
+  { "include": ["<debug/bitset>", "private", "<bitset>", "public"] },
+  { "include": ["<debug/deque>", "private", "<deque>", "public"] },
+  { "include": ["<debug/forward_list>", "private", "<forward_list>", "public"] },
+  { "include": ["<debug/list>", "private", "<list>", "public"] },
+  { "include": ["<debug/map>", "private", "<map>", "public"] },
+  { "include": ["<debug/set>", "private", "<set>", "public"] },
+  { "include": ["<debug/unordered_map>", "private", "<unordered_map>", "public"] },
+  { "include": ["<debug/unordered_set>", "private", "<unordered_set>", "public"] },
+  { "include": ["<debug/vector>", "private", "<vector>", "public"] },
+]
