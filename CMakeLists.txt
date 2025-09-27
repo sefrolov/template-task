@@ -26,7 +26,7 @@ if (IWYU_BIN)
                 "-Xiwyu;--mapping_file=${CMAKE_SOURCE_DIR}/cmake/libstdcxx.imp")
     endif ()
 else ()
-    message(STATUS "include-what-you-use not found, running without it")
+    message(WARNING "include-what-you-use not found, running without it")
 endif ()
 
 # Setup a 'solution' target
