@@ -3,9 +3,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#include <map>
 #include <stdexcept>
 #include <vector>
-#include <map>
 
 namespace ct {
 

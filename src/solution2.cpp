@@ -2,7 +2,7 @@
 
 #include <cstddef>
 #include <cstdint>
-#include <type_traits>
+#include <vector>
 
 namespace ct {
 size_t bar() {
