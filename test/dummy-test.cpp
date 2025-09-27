@@ -5,7 +5,7 @@
 #include <stdexcept>
 // #include <unordered_map>
 
-#include <stdint.h>
+#include <cstdint>
 
 #include <vector>
 
