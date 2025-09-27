@@ -2,10 +2,9 @@
 
 #include <catch2/catch_test_macros.hpp>
 
-#include <stdexcept>
-// #include <unordered_map>
-
 #include <cstdint>
+#include <stdexcept>
+#include <unordered_map>
 #include <vector>
 
 namespace ct_test {
