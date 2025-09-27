@@ -6,7 +6,6 @@
 // #include <unordered_map>
 
 #include <cstdint>
-
 #include <vector>
 
 namespace ct_test {
