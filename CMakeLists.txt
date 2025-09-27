@@ -21,10 +21,12 @@ endif ()
 
 if (MSVC)
     set(CMAKE_CXX_INCLUDE_WHAT_YOU_USE "${IWYU_BIN};--driver-mode=cl"
-            "-Wno-unknown-warning-option;--mapping_file=${CMAKE_SOURCE_DIR}/cmake/libstdcxx.imp")
+            "-Wno-unknown-warning-option"
+            "-Xiwyu;--mapping_file=${CMAKE_SOURCE_DIR}/cmake/libstdcxx.imp")
 else ()
     set(CMAKE_CXX_INCLUDE_WHAT_YOU_USE "${IWYU_BIN}"
-            "-Wno-unknown-warning-option;--mapping_file=${CMAKE_SOURCE_DIR}/cmake/libstdcxx.imp")
+            "-Wno-unknown-warning-option"
+            "-Xiwyu;--mapping_file=${CMAKE_SOURCE_DIR}/cmake/libstdcxx.imp")
 endif ()
 
 # Setup a 'solution' target
@@ -56,4 +58,3 @@ target_link_libraries(tests PRIVATE solution)
 # Link tests with dependencies
 find_package(Catch2 CONFIG REQUIRED)
 target_link_libraries(tests PRIVATE Catch2::Catch2WithMain)
-
