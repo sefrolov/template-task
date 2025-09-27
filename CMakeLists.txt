@@ -20,9 +20,11 @@ if (NOT IWYU_BIN)
 endif ()
 
 if (MSVC)
-    set(CMAKE_CXX_INCLUDE_WHAT_YOU_USE "${IWYU_BIN};--driver-mode=cl;-Wno-unknown-warning-option")
+    set(CMAKE_CXX_INCLUDE_WHAT_YOU_USE "${IWYU_BIN};--driver-mode=cl"
+            "-Wno-unknown-warning-option;--mapping_file=${CMAKE_SOURCE_DIR}/cmake/libstdcxx.imp")
 else ()
-    set(CMAKE_CXX_INCLUDE_WHAT_YOU_USE "${IWYU_BIN};-Wno-unknown-warning-option")
+    set(CMAKE_CXX_INCLUDE_WHAT_YOU_USE "${IWYU_BIN}"
+            "-Wno-unknown-warning-option;--mapping_file=${CMAKE_SOURCE_DIR}/cmake/libstdcxx.imp")
 endif ()
 
 # Setup a 'solution' target
