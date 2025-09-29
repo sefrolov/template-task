@@ -14,36 +14,39 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 ct_configure_compiler()
 include(Dependencies)
 
-find_package(Python3 COMPONENTS Interpreter REQUIRED)
+find_package(Python3 COMPONENTS Interpreter)
 find_program(IWYU_BIN NAMES include-what-you-use iwyu)
-execute_process(COMMAND ${CMAKE_CXX_COMPILER} -dumpfullversion
-        OUTPUT_VARIABLE _gcc_ver_full
-        OUTPUT_STRIP_TRAILING_WHITESPACE
-        ERROR_QUIET)
-execute_process(COMMAND ${CMAKE_CXX_COMPILER} -dumpmachine
-        OUTPUT_VARIABLE _triple
-        OUTPUT_STRIP_TRAILING_WHITESPACE
-        ERROR_QUIET)
-string(REGEX REPLACE "^([0-9]+)\\..*" "\\1" _gcc_ver "${_gcc_ver_full}")
-set(_root1 "/usr/include/c++/${_gcc_ver}")
-set(_root2 "/usr/include/${_triple}/c++/${_gcc_ver}")
-execute_process(
-        COMMAND ${Python3_EXECUTABLE} "${CMAKE_SOURCE_DIR}/cmake/iwyu-mapgen-libstdcxx.py"
-        --lang imp "${_root1}" "${_root2}"
-        OUTPUT_FILE "${CMAKE_SOURCE_DIR}/cmake/libstdcxx.imp"
-        ERROR_VARIABLE _mapgen_err
-        RESULT_VARIABLE _mapgen_rc
-)
+
+set(IWYU_MAPPING_ARGS "")
+if (Python3_Interpreter_FOUND)
+    execute_process(COMMAND ${CMAKE_CXX_COMPILER} -dumpfullversion
+            OUTPUT_VARIABLE _gcc_ver_full
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+            ERROR_QUIET)
+    execute_process(COMMAND ${CMAKE_CXX_COMPILER} -dumpmachine
+            OUTPUT_VARIABLE _triple
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+            ERROR_QUIET)
+    string(REGEX REPLACE "^([0-9]+)\\..*" "\\1" _gcc_ver "${_gcc_ver_full}")
+    execute_process(
+            COMMAND ${Python3_EXECUTABLE} "${CMAKE_SOURCE_DIR}/cmake/iwyu-mapgen-libstdcxx.py"
+            --lang imp "/usr/include/c++/${_gcc_ver}" "/usr/include/${_triple}/c++/${_gcc_ver}"
+            OUTPUT_FILE "${CMAKE_SOURCE_DIR}/cmake/libstdcxx.imp"
+    )
+    list(APPEND IWYU_MAPPING_ARGS "-Xiwyu" "--mapping_file=${CMAKE_SOURCE_DIR}/cmake/libstdcxx.imp")
+else ()
+    message(WARNING "python3 not found, running without mapping_file for iwyu")
+endif ()
 
 if (IWYU_BIN)
     if (MSVC)
         set(CMAKE_CXX_INCLUDE_WHAT_YOU_USE "${IWYU_BIN};--driver-mode=cl"
                 "-Wno-unknown-warning-option"
-                "-Xiwyu;--mapping_file=${CMAKE_SOURCE_DIR}/cmake/libstdcxx.imp")
+                ${IWYU_MAPPING_ARGS})
     else ()
         set(CMAKE_CXX_INCLUDE_WHAT_YOU_USE "${IWYU_BIN}"
                 "-Wno-unknown-warning-option"
-                "-Xiwyu;--mapping_file=${CMAKE_SOURCE_DIR}/cmake/libstdcxx.imp")
+                ${IWYU_MAPPING_ARGS})
     endif ()
 else ()
     message(WARNING "include-what-you-use not found, running without it")
