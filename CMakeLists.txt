@@ -14,7 +14,28 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 ct_configure_compiler()
 include(Dependencies)
 
+find_package(Python3 COMPONENTS Interpreter REQUIRED)
 find_program(IWYU_BIN NAMES include-what-you-use iwyu)
+execute_process(COMMAND ${CMAKE_CXX_COMPILER} -dumpfullversion
+        OUTPUT_VARIABLE _gcc_ver
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+        ERROR_QUIET)
+execute_process(COMMAND ${CMAKE_CXX_COMPILER} -dumpmachine
+        OUTPUT_VARIABLE _triple
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+        ERROR_QUIET)
+if (_gcc_ver)
+    set(_root1 "/usr/include/c++/${_gcc_ver}")
+    set(_root2 "/usr/include/${_triple}/c++/${_gcc_ver}")
+endif()
+execute_process(
+        COMMAND ${Python3_EXECUTABLE} "${CMAKE_SOURCE_DIR}/cmake/iwyu-mapgen-libstdcxx.py"
+        --lang imp "${_root1}" "${_root2}"
+        OUTPUT_FILE "${CMAKE_SOURCE_DIR}/cmake/libstdcxx.imp"
+        ERROR_VARIABLE _mapgen_err
+        RESULT_VARIABLE _mapgen_rc
+)
+
 if (IWYU_BIN)
     if (MSVC)
         set(CMAKE_CXX_INCLUDE_WHAT_YOU_USE "${IWYU_BIN};--driver-mode=cl"
