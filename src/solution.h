@@ -3,7 +3,6 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#include <vector>
 #include <stdexcept>
 #include <vector>
 
